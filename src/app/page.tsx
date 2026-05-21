@@ -2,141 +2,173 @@
 
 import React from "react";
 import Link from "next/link";
-import { Scale, Mic, Zap, ArrowRight, Play, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, FileText, Mic, Scale, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+
+const features = [
+  {
+    title: "Ask naturally",
+    description: "Speak or type the way you would with a trusted legal assistant.",
+    icon: Mic,
+  },
+  {
+    title: "Read with clarity",
+    description: "Dense legal material is organized into calm, scannable answers.",
+    icon: FileText,
+  },
+  {
+    title: "Stay grounded",
+    description: "Every response is built for careful review, not flashy certainty.",
+    icon: ShieldCheck,
+  },
+];
+
+const assurances = ["Private by design", "Built for legal workflows", "Human review encouraged"];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#020617] selection:bg-[#B89B5E]/30">
-      {/* Background Glows */}
-      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-[#B89B5E]/5 blur-[120px] rounded-full pointer-events-none"></div>
-      <div className="fixed bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-
-      {/* Navigation */}
-      <nav className="relative z-50 h-24 flex items-center justify-between px-10 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#B89B5E] to-[#8C7342] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#B89B5E]/20">
-            <Scale size={20} />
+    <main className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5]">
+      <header className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-6 sm:px-10">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-[#18181B] shadow-sm">
+            <Scale size={19} strokeWidth={1.9} />
           </div>
-          <span className="font-display font-bold text-2xl text-white tracking-tight">ApnaVakil</span>
-        </div>
-        
-        <div className="hidden md:flex items-center gap-10">
-            <Link href="#features" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Features</Link>
-            <Link href="#pricing" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Expertise</Link>
-            <Link href="#faq" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">About</Link>
-        </div>
+          <div>
+            <p className="font-display text-lg font-semibold tracking-tight">ApnaVakil</p>
+            <p className="text-xs text-[#71717A]">Legal intelligence</p>
+          </div>
+        </Link>
 
-        <div className="flex items-center gap-6">
-          <Link href="/login" className="text-sm font-semibold text-white hover:text-[#B89B5E] transition-colors">Sign In</Link>
-          <Link href="/signup" className="px-6 py-3 bg-white text-[#020617] rounded-full text-sm font-bold hover:bg-[#B89B5E] hover:text-white transition-all shadow-xl shadow-white/5">
-            Get Started
+        <nav className="hidden items-center gap-8 md:flex">
+          <Link href="#product" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Product</Link>
+          <Link href="#workflow" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Workflow</Link>
+          <Link href="#trust" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Trust</Link>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <Link href="/login" className="hidden rounded-2xl px-4 py-2 text-sm font-medium text-[#D4D4D8] transition-colors hover:text-white sm:block">
+            Sign in
+          </Link>
+          <Link href="/signup" className="quiet-button rounded-2xl px-5 py-2.5 text-sm font-semibold transition duration-200">
+            Get started
           </Link>
         </div>
-      </nav>
+      </header>
 
-      {/* Hero Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-10 pt-24 pb-32">
-        <div className="flex flex-col items-center text-center space-y-12">
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em]"
-          >
-            <span className="w-2 h-2 bg-[#B89B5E] rounded-full animate-pulse"></span>
-            <span>Now Live: Multi-Modal Legal Intelligence</span>
-          </motion.div>
+      <section className="mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-10 sm:px-10 lg:grid-cols-[1.02fr_0.98fr]">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="max-w-3xl"
+        >
+          <div className="mb-9 inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-[#A1A1AA]">
+            Calm legal help, designed for focus
+          </div>
+          <h1 className="font-display text-5xl font-semibold leading-[1.03] tracking-tight text-[#F5F5F5] sm:text-6xl lg:text-7xl">
+            Legal answers with the restraint of a good advisor.
+          </h1>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-[#A1A1AA]">
+            ApnaVakil brings research, drafting support, and voice consultation into a quiet workspace that feels clear, premium, and trustworthy.
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="max-w-4xl space-y-6"
-          >
-            <h1 className="text-6xl md:text-8xl font-display font-bold text-white leading-[1.05] tracking-tight">
-              Justice, Accelerated <br />
-              <span className="gold-gradient-text italic font-light">by Intelligence.</span>
-            </h1>
-            <p className="text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
-              The world's most advanced AI legal assistant. Instant case summaries, real-time voice consultations, and precise law indexing—crafted for the modern world.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center gap-6 pt-4"
-          >
-            <Link href="/chat" className="group px-10 py-5 bg-[#B89B5E] text-white rounded-full text-lg font-bold shadow-2xl shadow-[#B89B5E]/30 flex items-center gap-3 hover:scale-105 transition-all">
-              <span>Start Your Consultation</span>
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Link href="/chat" className="quiet-button inline-flex items-center justify-center gap-2 rounded-3xl px-6 py-4 text-sm font-semibold transition duration-200">
+              Start consultation
+              <ArrowRight size={17} />
             </Link>
-            <button className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-full text-lg font-bold hover:bg-white/10 transition-all flex items-center gap-3">
-              <Play size={18} fill="currentColor" />
-              <span>Watch the Demo</span>
-            </button>
-          </motion.div>
+            <Link href="/login" className="ghost-button inline-flex items-center justify-center rounded-3xl px-6 py-4 text-sm font-semibold transition duration-200">
+              Sign in
+            </Link>
+          </div>
 
-          {/* Trusted By / Stats */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-20"
-          >
-            {[
-              { label: "Precision Rate", value: "99.8%" },
-              { label: "Legal Sources", value: "10k+" },
-              { label: "Voice Latency", value: "<150ms" },
-              { label: "Trusted Users", value: "5k+" },
-            ].map((stat, i) => (
-              <div key={i} className="text-center space-y-1">
-                <p className="text-3xl font-display font-bold text-white">{stat.value}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">{stat.label}</p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            {assurances.map((item) => (
+              <div key={item} className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.03] px-4 py-2 text-sm text-[#A1A1AA]">
+                <Check size={14} className="text-[#D4D4D8]" />
+                {item}
               </div>
             ))}
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
-        {/* Floating Mockup Preview */}
         <motion.div
-           initial={{ opacity: 0, y: 100 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ delay: 0.5, duration: 1 }}
-           className="mt-32 relative max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12, duration: 0.6, ease: "easeOut" }}
+          className="apple-surface overflow-hidden rounded-[2rem] p-3"
         >
-          <div className="absolute -inset-4 bg-[#B89B5E]/20 blur-3xl rounded-full opacity-20"></div>
-          <div className="glass-card rounded-[2.5rem] p-4 shadow-2xl overflow-hidden border border-white/10">
-            <div className="bg-[#020617] rounded-[2rem] aspect-video flex flex-col overflow-hidden">
-               {/* Mockup UI Header */}
-               <div className="p-6 border-b border-white/5 flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/40"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/40"></div>
-                  </div>
-                  <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-slate-500 font-medium">
-                    secure.apnavakil.ai/chat
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-white/5"></div>
-               </div>
-               
-               {/* Mockup Chat Content */}
-               <div className="flex-1 p-10 flex flex-col justify-center items-center text-center space-y-8">
-                  <div className="w-24 h-24 bg-[#B89B5E]/20 rounded-full flex items-center justify-center text-[#B89B5E] shadow-inner shadow-[#B89B5E]/40">
-                    <Mic size={48} className="animate-pulse" />
-                  </div>
-                  <div className="space-y-3">
-                    <h3 className="text-2xl font-display font-medium text-white italic">"How do I file for intellectual property?"</h3>
-                    <p className="text-slate-500 text-sm">Processing legal citation for Copyright Act, 1957...</p>
-                  </div>
-               </div>
+          <div className="rounded-[1.55rem] border border-white/8 bg-[#0F0F0F] p-5 sm:p-7">
+            <div className="flex items-center justify-between border-b border-white/8 pb-5">
+              <div>
+                <p className="text-sm font-semibold text-[#F5F5F5]">Consultation</p>
+                <p className="mt-1 text-xs text-[#71717A]">Property agreement review</p>
+              </div>
+              <div className="rounded-full border border-white/10 px-3 py-1 text-xs text-[#A1A1AA]">Live</div>
+            </div>
+
+            <div className="space-y-6 py-8">
+              <div className="max-w-[84%] rounded-[1.35rem] bg-[#1F1F1F] px-5 py-4 text-sm leading-6 text-[#E4E4E7]">
+                Can you explain what I should verify before signing a sale deed?
+              </div>
+              <div className="ml-auto max-w-[88%] space-y-4 text-sm leading-6 text-[#D4D4D8]">
+                <p>
+                  Start with title continuity, encumbrance records, identity of parties, payment clauses, possession date, and registration requirements.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {["Title chain", "Mutation records", "Stamp duty", "Possession terms"].map((item) => (
+                    <div key={item} className="matte-card rounded-2xl px-4 py-3 text-xs text-[#A1A1AA]">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[1.45rem] border border-white/8 bg-white/[0.04] p-3">
+              <div className="flex items-center gap-3 rounded-[1.15rem] bg-[#121212] px-4 py-4">
+                <span className="h-2 w-2 rounded-full bg-[#D4D4D8]" />
+                <p className="text-sm text-[#71717A]">Ask a legal question...</p>
+              </div>
             </div>
           </div>
         </motion.div>
-      </main>
-    </div>
+      </section>
+
+      <section id="product" className="mx-auto w-full max-w-7xl px-6 py-20 sm:px-10">
+        <div className="mb-10 max-w-2xl">
+          <p className="text-sm font-medium text-[#A1A1AA]">Product</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">A quieter way to work through legal questions.</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {features.map(({ title, description, icon: Icon }) => (
+            <div key={title} className="matte-card rounded-[1.75rem] p-6">
+              <div className="mb-12 flex h-11 w-11 items-center justify-center rounded-2xl bg-white/[0.055] text-[#D4D4D8]">
+                <Icon size={20} strokeWidth={1.8} />
+              </div>
+              <h3 className="font-display text-xl font-semibold tracking-tight">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[#A1A1AA]">{description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="workflow" className="mx-auto w-full max-w-7xl px-6 pb-24 sm:px-10">
+        <div className="apple-surface grid gap-10 rounded-[2rem] p-8 sm:p-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-sm font-medium text-[#A1A1AA]">Workflow</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight">Built around the way careful decisions are made.</h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {["Question", "Review", "Act"].map((step, index) => (
+              <div key={step} className="rounded-[1.5rem] border border-white/8 bg-[#121212] p-5">
+                <p className="text-xs text-[#71717A]">0{index + 1}</p>
+                <p className="mt-8 font-display text-lg font-semibold">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Upload, File, CheckCircle2, AlertCircle, Loader2, ShieldCheck, Database } from "lucide-react";
+import { AlertCircle, CheckCircle2, Database, File, Loader2, ShieldCheck, Upload } from "lucide-react";
 import api from "@/services/api";
 
 export default function DocumentsPage() {
@@ -27,51 +27,50 @@ export default function DocumentsPage() {
       await api.post("/legal/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setStatus({ type: "success", message: "Document safely stored and indexed in the vault." });
+      setStatus({ type: "success", message: "Document stored and indexed." });
       setFile(null);
       setTitle("");
     } catch (error) {
-      setStatus({ type: "error", message: "Vault ingestion failed. Please verify the PDF integrity." });
+      console.error("Document upload failed:", error);
+      setStatus({ type: "error", message: "Upload failed. Please verify the PDF and try again." });
     } finally {
       setIsUploading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-4">
-      <header className="mb-12">
-        <div className="flex items-center gap-3 mb-2">
-           <Database className="text-[#B89B5E]" size={24} />
-           <h1 className="text-3xl font-display font-bold text-white tracking-tight">Legal Vault <span className="text-slate-500 font-light text-xl">/ Ingestion</span></h1>
+    <div className="mx-auto max-w-4xl py-2">
+      <header className="mb-8">
+        <div className="mb-3 flex items-center gap-3">
+          <Database className="text-[#A1A1AA]" size={22} />
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Legal Vault</h1>
         </div>
-        <p className="text-slate-400 text-lg">Securely upload and index legal precedents into the ApnaVakil intelligence core.</p>
+        <p className="max-w-2xl text-sm leading-6 text-[#A1A1AA]">
+          Upload and index legal documents in a clean administrative workflow.
+        </p>
       </header>
 
-      {/* Main Glass Card */}
-      <div className="bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] border border-white/5 p-10 shadow-2xl relative overflow-hidden">
-        {/* Decorative Internal Glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#B89B5E]/5 blur-[80px] rounded-full -mr-32 -mt-32" />
-        
-        <form onSubmit={handleUpload} className="relative z-10 space-y-8">
-          <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-3">
-              <label className="text-sm font-bold text-slate-500 uppercase tracking-widest ml-1">Document Title</label>
+      <div className="apple-surface rounded-[2rem] p-6 sm:p-8">
+        <form onSubmit={handleUpload} className="space-y-7">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="ml-1 text-xs font-medium text-[#A1A1AA]">Document title</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Indian Penal Code 1860"
-                className="w-full bg-[#050A18] p-4 rounded-2xl border border-white/5 text-white placeholder-slate-600 focus:ring-1 focus:ring-[#B89B5E]/30 focus:border-[#B89B5E]/50 outline-none transition-all duration-300 font-medium"
+                placeholder="Indian Penal Code 1860"
+                className="premium-input w-full rounded-2xl p-4 text-sm outline-none transition"
                 required
               />
             </div>
-            <div className="space-y-3">
-              <label className="text-sm font-bold text-slate-500 uppercase tracking-widest ml-1">Legal Category</label>
+            <div className="space-y-2">
+              <label className="ml-1 text-xs font-medium text-[#A1A1AA]">Legal category</label>
               <div className="relative">
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-[#050A18] p-4 rounded-2xl border border-white/5 text-white appearance-none focus:ring-1 focus:ring-[#B89B5E]/30 focus:border-[#B89B5E]/50 outline-none transition-all duration-300 font-medium cursor-pointer"
+                  className="premium-input w-full cursor-pointer appearance-none rounded-2xl p-4 pr-11 text-sm outline-none transition"
                 >
                   <option>Criminal Law</option>
                   <option>Civil Law</option>
@@ -79,15 +78,13 @@ export default function DocumentsPage() {
                   <option>Family Law</option>
                   <option>Corporate Law</option>
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#B89B5E]">
-                  <ShieldCheck size={18} />
-                </div>
+                <ShieldCheck className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#71717A]" size={17} />
               </div>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-sm font-bold text-slate-500 uppercase tracking-widest ml-1">PDF Artifact</label>
+          <div className="space-y-2">
+            <label className="ml-1 text-xs font-medium text-[#A1A1AA]">PDF document</label>
             <div className="group relative">
               <input
                 type="file"
@@ -96,72 +93,63 @@ export default function DocumentsPage() {
                 className="hidden"
                 id="file-upload"
               />
-              <label 
-                htmlFor="file-upload" 
-                className={`
-                  flex flex-col items-center justify-center p-12 rounded-[2rem] border-2 border-dashed transition-all duration-500 cursor-pointer
-                  ${file ? 'border-[#B89B5E]/50 bg-[#B89B5E]/5' : 'border-white/10 bg-[#050A18] hover:border-[#B89B5E]/30 hover:bg-white/[0.02]'}
-                `}
+              <label
+                htmlFor="file-upload"
+                className={`flex cursor-pointer flex-col items-center justify-center rounded-[1.75rem] border border-dashed p-10 text-center transition duration-200 ${
+                  file
+                    ? "border-white/18 bg-white/[0.055]"
+                    : "border-white/10 bg-[#121212] hover:border-white/18 hover:bg-white/[0.045]"
+                }`}
               >
-                <div className={`
-                  w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500
-                  ${file ? 'bg-[#B89B5E] text-white shadow-xl shadow-[#B89B5E]/20 rotate-0' : 'bg-white/5 text-slate-500 group-hover:scale-110 group-hover:text-[#B89B5E]'}
-                `}>
-                  {file ? <File size={32} /> : <Upload size={32} />}
+                <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-white/[0.055] text-[#D4D4D8]">
+                  {file ? <File size={26} /> : <Upload size={26} />}
                 </div>
-                <span className={`text-xl font-bold mb-2 transition-colors ${file ? 'text-white' : 'text-slate-400'}`}>
-                  {file ? file.name : "Secure Upload Engine"}
+                <span className="text-base font-semibold text-white">
+                  {file ? file.name : "Choose a PDF"}
                 </span>
-                <span className="text-sm text-slate-600 font-medium uppercase tracking-widest">
-                  {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB • PDF READY` : "Drag and drop legal artifacts here"}
+                <span className="mt-2 text-xs text-[#71717A]">
+                  {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB selected` : "Drag and drop or browse from your device"}
                 </span>
               </label>
             </div>
           </div>
 
           {status && (
-            <div className={`p-5 rounded-2xl flex items-center gap-4 animate-in fade-in slide-in-from-top-2 duration-300 ${
-              status.type === "success" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"
-            }`}>
-              {status.type === "success" ? <CheckCircle2 size={24} /> : <AlertCircle size={24} />}
-              <span className="text-sm font-bold tracking-wide uppercase">{status.message}</span>
+            <div
+              className={`flex items-center gap-3 rounded-2xl border p-4 text-sm font-medium ${
+                status.type === "success"
+                  ? "border-white/10 bg-white/[0.045] text-[#D4D4D8]"
+                  : "border-red-300/15 bg-red-300/8 text-red-200"
+              }`}
+            >
+              {status.type === "success" ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
+              <span>{status.message}</span>
             </div>
           )}
 
           <button
             type="submit"
             disabled={!file || isUploading}
-            className="group relative w-full py-5 rounded-2xl overflow-hidden shadow-2xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
+            className="quiet-button flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl py-4 text-sm font-semibold transition duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-45"
           >
-            {/* Premium Gold Background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#B89B5E] via-[#D4AF37] to-[#8C7342] group-hover:scale-[1.05] transition-transform duration-500" />
-            
-            <div className="relative flex items-center justify-center gap-3 text-white font-bold text-lg uppercase tracking-[0.2em]">
-              {isUploading ? (
-                <>
-                  <Loader2 className="animate-spin" size={24} />
-                  <span>Ingesting Data...</span>
-                </>
-              ) : (
-                <>
-                  <ShieldCheck size={24} />
-                  <span>Commit to Legal Vault</span>
-                </>
-              )}
-            </div>
+            {isUploading ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                Uploading
+              </>
+            ) : (
+              <>
+                <ShieldCheck size={19} />
+                Upload document
+              </>
+            )}
           </button>
         </form>
       </div>
-      
-      <div className="mt-8 flex justify-center items-center gap-8 text-[10px] font-bold text-slate-700 uppercase tracking-[0.4em]">
-         <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#B89B5E]" />
-            <span>Encrypted Tunnel</span>
-         </div>
-         <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#B89B5E]" />
-            <span>Automatic Indexing</span>
-         </div>
+
+      <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs text-[#71717A]">
+        <span className="rounded-full border border-white/8 bg-white/[0.035] px-3 py-1.5">Encrypted upload</span>
+        <span className="rounded-full border border-white/8 bg-white/[0.035] px-3 py-1.5">Automatic indexing</span>
       </div>
     </div>
   );

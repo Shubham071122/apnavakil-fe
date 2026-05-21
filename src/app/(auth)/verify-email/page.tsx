@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useRef, useTransition, useEffect } from "react";
+import React, { Suspense, useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Scale, ShieldCheck, ChevronRight, RefreshCcw, Loader2, AlertCircle } from "lucide-react";
+import { AlertCircle, ChevronRight, Loader2, RefreshCcw, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import { verifyOtpAction, resendOtpAction } from "../../../../actions/auth";
+import { resendOtpAction, verifyOtpAction } from "../../../../actions/auth";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const emailFromQuery = searchParams.get("email") || "";
-  
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isPending, startTransition] = useTransition();
   const [isResending, setIsResending] = useState(false);
@@ -18,7 +18,6 @@ export default function VerifyEmailPage() {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
-
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -70,7 +69,7 @@ export default function VerifyEmailPage() {
     setError(null);
     setSuccessMsg(null);
     startTransition(async () => {
-      const result = await verifyOtpAction(emailFromQuery, code); 
+      const result = await verifyOtpAction(emailFromQuery, code);
       if (!result.success) {
         setError(result.message);
       }
@@ -79,15 +78,15 @@ export default function VerifyEmailPage() {
 
   const handleResend = async () => {
     if (timer > 0 || isResending) return;
-    
+
     setIsResending(true);
     setError(null);
     setSuccessMsg(null);
-    
+
     const result = await resendOtpAction(emailFromQuery);
     if (result.success) {
       setTimer(60);
-      setSuccessMsg("Verification code resent successfully!");
+      setSuccessMsg("Verification code resent successfully.");
     } else {
       setError(result.message);
     }
@@ -95,87 +94,104 @@ export default function VerifyEmailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 selection:bg-[#B89B5E]/30">
-      <div className="fixed top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(184,155,94,0.05)_0%,transparent_100%)] pointer-events-none"></div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+    <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-10 text-[#F5F5F5]">
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-[500px] space-y-8 relative z-10"
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="w-full max-w-[500px]"
       >
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-14 h-14 bg-[#B89B5E]/10 border border-[#B89B5E]/20 rounded-2xl flex items-center justify-center text-[#B89B5E] shadow-2xl">
-            <ShieldCheck size={28} />
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-[1.35rem] border border-white/10 bg-[#18181B]">
+            <ShieldCheck size={24} strokeWidth={1.8} />
           </div>
-          <div>
-            <h1 className="text-3xl font-display font-bold text-white tracking-tight">Verify Your Email</h1>
-            <p className="text-slate-500 text-sm font-medium max-w-xs mx-auto">
-              We've sent a 6-digit code to <br />
-              <span className="text-[#B89B5E] font-bold">{emailFromQuery || "your email"}</span>
-            </p>
-          </div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight">Verify your email</h1>
+          <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#A1A1AA]">
+            Enter the 6-digit code sent to <span className="text-[#F5F5F5]">{emailFromQuery || "your email"}</span>.
+          </p>
         </div>
 
-        <div className="glass-card p-10 rounded-[2.5rem] space-y-8">
-          <div className="flex justify-between gap-3" onPaste={handlePaste}>
+        <div className="apple-surface rounded-[2rem] p-6 sm:p-8">
+          <div className="grid grid-cols-6 gap-2.5 sm:gap-3" onPaste={handlePaste}>
             {otp.map((data, index) => (
               <input
                 key={index}
                 type="text"
                 maxLength={1}
-                ref={(el) => { inputs.current[index] = el; }}
+                ref={(el) => {
+                  inputs.current[index] = el;
+                }}
                 value={data}
                 onChange={(e) => handleChange(e.target, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
-                className="w-full aspect-square bg-white/5 border border-white/10 rounded-2xl text-center text-2xl font-bold text-white focus:ring-2 focus:ring-[#B89B5E] focus:border-[#B89B5E] outline-none transition-all"
+                className="premium-input aspect-square w-full rounded-2xl text-center text-xl font-semibold outline-none transition sm:text-2xl"
               />
             ))}
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-xs font-medium">
+            <div className="mt-5 flex items-center gap-2 rounded-2xl border border-red-300/15 bg-red-300/8 p-3 text-xs font-medium text-red-200">
               <AlertCircle size={14} />
               <span>{error}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="flex items-center gap-2 text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20 text-xs font-medium">
+            <div className="mt-5 flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-xs font-medium text-[#D4D4D8]">
               <ShieldCheck size={14} />
               <span>{successMsg}</span>
             </div>
           )}
 
-          <button 
+          <button
             onClick={handleVerify}
             disabled={isPending || otp.join("").length < 6}
-            className="w-full py-4 bg-[#B89B5E] text-white rounded-xl font-bold shadow-xl shadow-[#B89B5E]/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="quiet-button mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold transition duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending ? <Loader2 className="animate-spin" size={20} /> : (
+            {isPending ? (
+              <Loader2 className="animate-spin" size={19} />
+            ) : (
               <>
-                <span>Secure Verify</span>
-                <ChevronRight size={20} />
+                Verify
+                <ChevronRight size={18} />
               </>
             )}
           </button>
 
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-xs text-slate-500 font-medium">Didn't receive the code?</p>
-            <button 
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <p className="text-xs text-[#71717A]">Did not receive the code?</p>
+            <button
               onClick={handleResend}
               disabled={timer > 0 || isResending}
-              className="flex items-center gap-2 text-sm font-bold text-[#B89B5E] hover:text-white transition-colors group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-[#D4D4D8] transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-45"
             >
-              {isResending ? <Loader2 className="animate-spin" size={14} /> : <RefreshCcw size={14} className={`${timer === 0 ? 'group-hover:rotate-180' : ''} transition-transform duration-500`} />}
-              <span>{timer > 0 ? `Resend in ${timer}s` : "Resend Verification Code"}</span>
+              {isResending ? <Loader2 className="animate-spin" size={14} /> : <RefreshCcw size={14} />}
+              <span>{timer > 0 ? `Resend in ${timer}s` : "Resend code"}</span>
             </button>
           </div>
         </div>
 
-        <p className="text-center text-sm text-slate-500">
-          Want to use a different email? <Link href="/signup" className="text-white font-bold hover:underline transition-colors">Change Email</Link>
+        <p className="mt-7 text-center text-sm text-[#A1A1AA]">
+          Need a different email?{" "}
+          <Link href="/signup" className="font-medium text-[#F5F5F5] transition-colors hover:text-white">
+            Change email
+          </Link>
         </p>
-      </motion.div>
-    </div>
+      </motion.section>
+    </main>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-10 text-[#F5F5F5]">
+          <Loader2 className="animate-spin text-[#A1A1AA]" size={24} />
+        </main>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 export const useVoiceRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);

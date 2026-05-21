@@ -5,8 +5,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080/api/v1";
+const COOKIE_NAME = "auth_token";
 
-async function apiCall(endpoint: string, data: any) {
+type ApiRequestData = Record<string, string | undefined>;
+
+async function apiCall(endpoint: string, data: ApiRequestData) {
   try {
     const response = await axios.post(`${BACKEND_URL}${endpoint}`, data, {
       headers: { "Content-Type": "application/json" }
@@ -28,11 +31,15 @@ async function apiCall(endpoint: string, data: any) {
     }
     
     return { success: true, data: response.data };
-  } catch (error: any) {
-    console.error(`API Error [${endpoint}]:`, error.response?.data || error.message);
+  } catch (error) {
+    const message = axios.isAxiosError(error)
+      ? error.response?.data?.message || error.message
+      : "Something went wrong";
+    const details = axios.isAxiosError(error) ? error.response?.data || error.message : error;
+    console.error(`API Error [${endpoint}]:`, details);
     return { 
       success: false, 
-      message: error.response?.data?.message || "Something went wrong" 
+      message,
     };
   }
 }
@@ -55,7 +62,7 @@ export async function loginAction(formData: FormData) {
   return result;
 }
 
-export async function signupAction(formData: {fullName: string, email: string, password: string}) {
+export async function signupAction(formData: {fullName: string; email: string; password: string}) {
   const result = await apiCall("/auth/register", formData);
 
   if (result.success) {
@@ -77,4 +84,10 @@ export async function verifyOtpAction(email: string, code: string) {
 
 export async function resendOtpAction(email: string) {
   return await apiCall("/auth/resend-otp", { email });
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete(COOKIE_NAME);
+  redirect("/login");
 }

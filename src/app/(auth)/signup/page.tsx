@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import Link from "next/link";
-import { Scale, Mail, Lock, User, ChevronRight, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, ChevronRight, Loader2, Lock, Mail, Scale, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { signupAction } from "../../../../actions/auth";
 
@@ -25,7 +25,7 @@ export default function SignupPage() {
   const handleSubmit = async () => {
     setError(null);
     startTransition(async () => {
-      const result = await signupAction(formData as {fullName:string,email:string,password:string});
+      const result = await signupAction(formData as { fullName: string; email: string; password: string });
       if (!result.success) {
         setError(result.message);
       }
@@ -33,40 +33,37 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 selection:bg-[#B89B5E]/30">
-      <div className="fixed top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(184,155,94,0.05)_0%,transparent_100%)] pointer-events-none"></div>
-      
-      <Link href="/" className="fixed top-10 left-10 text-slate-500 hover:text-white flex items-center gap-2 transition-colors">
-        <ArrowLeft size={20} />
-        <span className="text-sm font-medium">Back to site</span>
+    <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-10 text-[#F5F5F5]">
+      <Link href="/" className="fixed left-6 top-6 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm text-[#A1A1AA] transition-colors hover:text-white sm:left-10 sm:top-10">
+        <ArrowLeft size={17} />
+        Back
       </Link>
 
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-[450px] space-y-8 relative z-10"
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="w-full max-w-[460px]"
       >
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-[#B89B5E] to-[#8C7342] rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-[#B89B5E]/20">
-            <Scale size={28} />
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-[1.35rem] border border-white/10 bg-[#18181B]">
+            <Scale size={24} strokeWidth={1.8} />
           </div>
-          <div>
-            <h1 className="text-3xl font-display font-bold text-white tracking-tight">Create Account</h1>
-            <p className="text-slate-500 text-sm font-medium">Join the next generation of legal intelligence</p>
-          </div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight">Create account</h1>
+          <p className="mt-2 text-sm leading-6 text-[#A1A1AA]">Start with a calm space for legal work.</p>
         </div>
 
-        <form action={handleSubmit} className="glass-card p-8 rounded-[2rem] space-y-6">
-          <div className="space-y-4">
+        <form action={handleSubmit} className="apple-surface rounded-[2rem] p-6 sm:p-7">
+          <div className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-1">Full Name</label>
+              <label className="ml-1 text-xs font-medium text-[#A1A1AA]">Full name</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                <input 
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#71717A]" size={18} />
+                <input
                   name="fullName"
-                  type="text" 
-                  placeholder="John Doe"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white focus:ring-2 focus:ring-[#B89B5E]/20 focus:border-[#B89B5E] outline-none transition-all"
+                  type="text"
+                  placeholder="Your name"
+                  className="premium-input w-full rounded-2xl py-4 pl-12 pr-4 text-sm outline-none transition"
                   required
                   onChange={handleChange}
                 />
@@ -74,14 +71,14 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-1">Email Address</label>
+              <label className="ml-1 text-xs font-medium text-[#A1A1AA]">Email</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                <input 
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#71717A]" size={18} />
+                <input
                   name="email"
-                  type="email" 
-                  placeholder="name@company.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white focus:ring-2 focus:ring-[#B89B5E]/20 focus:border-[#B89B5E] outline-none transition-all"
+                  type="email"
+                  placeholder="name@example.com"
+                  className="premium-input w-full rounded-2xl py-4 pl-12 pr-4 text-sm outline-none transition"
                   required
                   onChange={handleChange}
                 />
@@ -89,14 +86,14 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-1">Password</label>
+              <label className="ml-1 text-xs font-medium text-[#A1A1AA]">Password</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                <input 
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#71717A]" size={18} />
+                <input
                   name="password"
-                  type="password" 
-                  placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white focus:ring-2 focus:ring-[#B89B5E]/20 focus:border-[#B89B5E] outline-none transition-all"
+                  type="password"
+                  placeholder="Password"
+                  className="premium-input w-full rounded-2xl py-4 pl-12 pr-4 text-sm outline-none transition"
                   required
                   onChange={handleChange}
                 />
@@ -105,36 +102,40 @@ export default function SignupPage() {
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-xs font-medium">
+            <div className="mt-5 flex items-center gap-2 rounded-2xl border border-red-300/15 bg-red-300/8 p-3 text-xs font-medium text-red-200">
               <AlertCircle size={14} />
               <span>{error}</span>
             </div>
           )}
 
-          <button 
+          <button
             type="submit"
             disabled={isPending}
-            className="w-full py-4 bg-[#B89B5E] text-white rounded-xl font-bold shadow-xl shadow-[#B89B5E]/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="quiet-button mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-4 text-sm font-semibold transition duration-200 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? (
-              <Loader2 className="animate-spin" size={20} />
+              <Loader2 className="animate-spin" size={19} />
             ) : (
               <>
-                <span>Secure Sign Up</span>
-                <ChevronRight size={20} />
+                Create account
+                <ChevronRight size={18} />
               </>
             )}
           </button>
 
-          <p className="text-center text-[10px] text-slate-500 font-medium leading-relaxed">
-            By signing up, you agree to our <Link href="#" className="text-white hover:underline">Terms of Service</Link> and <Link href="#" className="text-white hover:underline">Privacy Policy</Link>.
+          <p className="mt-5 text-center text-xs leading-5 text-[#71717A]">
+            By signing up, you agree to our <Link href="#" className="text-[#D4D4D8] hover:text-white">Terms</Link> and{" "}
+            <Link href="#" className="text-[#D4D4D8] hover:text-white">Privacy Policy</Link>.
           </p>
         </form>
 
-        <p className="text-center text-sm text-slate-500">
-          Already have an account? <Link href="/login" className="text-[#B89B5E] font-bold hover:underline">Sign in</Link>
+        <p className="mt-7 text-center text-sm text-[#A1A1AA]">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-[#F5F5F5] transition-colors hover:text-white">
+            Sign in
+          </Link>
         </p>
-      </motion.div>
-    </div>
+      </motion.section>
+    </main>
   );
 }

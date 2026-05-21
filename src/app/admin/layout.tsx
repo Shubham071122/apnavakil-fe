@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Settings, LogOut } from "lucide-react";
+import { FileText, LayoutDashboard, LogOut, Scale, Settings } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,64 +15,51 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="flex h-screen bg-[#020617] text-slate-200">
-      {/* Premium Obsidian Sidebar */}
-      <aside className="w-72 bg-[#050A18] border-r border-white/5 flex flex-col p-8 relative overflow-hidden">
-        {/* Subtle Background Glow */}
-        <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#B89B5E]/5 blur-[100px] rounded-full" />
-        
-        <div className="relative z-10 flex items-center gap-3 mb-12">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#B89B5E] to-[#8C7342] flex items-center justify-center shadow-lg shadow-[#B89B5E]/20">
-             <span className="text-white font-bold text-xl">A</span>
+    <div className="flex h-screen bg-[#0A0A0A] text-[#F5F5F5]">
+      <aside className="hidden w-72 flex-col border-r border-white/8 bg-[#121212] p-6 lg:flex">
+        <div className="mb-10 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-[1.15rem] border border-white/10 bg-[#18181B]">
+            <Scale size={20} strokeWidth={1.85} />
           </div>
-          <div className="text-xl font-display font-bold tracking-tight text-white">
-            ApnaVakil <span className="text-[#B89B5E] font-light italic">Admin</span>
+          <div>
+            <p className="font-display text-lg font-semibold tracking-tight">ApnaVakil</p>
+            <p className="text-xs text-[#71717A]">Admin</p>
           </div>
         </div>
-        
-        <nav className="relative z-10 flex-1 space-y-2">
+
+        <nav className="flex-1 space-y-1.5">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
-              <Link 
+              <Link
                 key={item.href}
-                href={item.href} 
-                className={`group flex items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
-                  isActive 
-                    ? "bg-gradient-to-r from-[#B89B5E]/10 to-transparent border border-[#B89B5E]/20 text-white shadow-inner shadow-[#B89B5E]/5" 
-                    : "hover:bg-white/5 text-slate-400 hover:text-white"
+                href={item.href}
+                className={`group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition duration-200 ${
+                  isActive
+                    ? "bg-white/[0.075] text-white"
+                    : "text-[#A1A1AA] hover:bg-white/[0.045] hover:text-white"
                 }`}
               >
-                <item.icon 
-                  size={20} 
-                  className={isActive ? "text-[#B89B5E]" : "group-hover:text-[#B89B5E] transition-colors"} 
-                />
-                <span className={isActive ? "font-semibold" : "font-medium"}>
-                  {item.name}
-                </span>
+                <item.icon size={18} strokeWidth={1.85} />
+                <span className="font-medium">{item.name}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="relative z-10 pt-8 mt-auto border-t border-white/5">
-          <button className="flex items-center gap-3 p-4 w-full rounded-2xl hover:bg-red-500/10 text-slate-500 hover:text-red-400 transition-all duration-300">
-            <LogOut size={20} />
-            <span className="font-medium">Logout System</span>
+        <div className="border-t border-white/8 pt-5">
+          <button className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-[#71717A] transition-colors hover:bg-white/[0.045] hover:text-white">
+            <LogOut size={18} />
+            Logout
           </button>
         </div>
       </aside>
 
-      {/* Main Command Area */}
-      <main className="flex-1 overflow-auto relative">
-        {/* Ambient Page Glow */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#B89B5E]/5 blur-[150px] rounded-full -mr-64 -mt-64" />
-        
-        <div className="relative z-10 p-12">
+      <main className="flex-1 overflow-auto">
+        <div className="mx-auto max-w-7xl p-5 sm:p-8 lg:p-10">
           {children}
         </div>
       </main>
     </div>
   );
 }
-

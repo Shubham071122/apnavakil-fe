@@ -15,7 +15,16 @@ function getPayload(token: string) {
   }
 }
 
-function isTokenExpired(payload: any) {
+type TokenPayload = {
+  exp?: number;
+  isVerified?: boolean;
+};
+
+function isTokenPayload(payload: unknown): payload is TokenPayload {
+  return typeof payload === "object" && payload !== null;
+}
+
+function isTokenExpired(payload: TokenPayload | null) {
   if (!payload) return true;
   const exp = payload.exp;
   if (!exp) return false;
@@ -25,7 +34,8 @@ function isTokenExpired(payload: any) {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(COOKIE_NAME)?.value;
-  const payload = token ? getPayload(token) : null;
+  const decodedPayload = token ? getPayload(token) : null;
+  const payload = isTokenPayload(decodedPayload) ? decodedPayload : null;
   
   const isValid = payload && !isTokenExpired(payload);
   const isVerified = isValid && payload.isVerified === true;
