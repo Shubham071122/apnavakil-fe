@@ -86,6 +86,28 @@ export async function resendOtpAction(email: string) {
   return await apiCall("/auth/resend-otp", { email });
 }
 
+export async function forgotPasswordAction(email: string) {
+  const result = await apiCall("/auth/forgot-password", { email });
+
+  if (result.success) {
+    const cookieStore = await cookies();
+    cookieStore.delete(COOKIE_NAME);
+  }
+
+  return result;
+}
+
+export async function resetPasswordAction(token: string, newPassword: string) {
+  const result = await apiCall("/auth/reset-password", { token, newPassword });
+
+  if (result.success) {
+    const cookieStore = await cookies();
+    cookieStore.delete(COOKIE_NAME);
+  }
+
+  return result;
+}
+
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete(COOKIE_NAME);

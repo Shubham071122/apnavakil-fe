@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Check, FileText, Mic, Scale, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, FileText, Mic, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import { Navbar } from "@/components/Navbar";
 
 const features = [
   {
@@ -28,34 +29,9 @@ const assurances = ["Private by design", "Built for legal workflows", "Human rev
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5]">
-      <header className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-6 sm:px-10">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-[#18181B] shadow-sm">
-            <Scale size={19} strokeWidth={1.9} />
-          </div>
-          <div>
-            <p className="font-display text-lg font-semibold tracking-tight">ApnaVakil</p>
-            <p className="text-xs text-[#71717A]">Legal intelligence</p>
-          </div>
-        </Link>
+      <Navbar />
 
-        <nav className="hidden items-center gap-8 md:flex">
-          <Link href="#product" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Product</Link>
-          <Link href="#workflow" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Workflow</Link>
-          <Link href="#trust" className="text-sm text-[#A1A1AA] transition-colors hover:text-[#F5F5F5]">Trust</Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <Link href="/login" className="hidden rounded-2xl px-4 py-2 text-sm font-medium text-[#D4D4D8] transition-colors hover:text-white sm:block">
-            Sign in
-          </Link>
-          <Link href="/signup" className="quiet-button rounded-2xl px-5 py-2.5 text-sm font-semibold transition duration-200">
-            Get started
-          </Link>
-        </div>
-      </header>
-
-      <section className="mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-10 sm:px-10 lg:grid-cols-[1.02fr_0.98fr]">
+      <section className="mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-7xl items-center gap-14 px-6 pb-20 pt-10 sm:px-10 lg:grid-cols-[1.02fr_0.98fr]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -108,10 +84,10 @@ export default function LandingPage() {
             </div>
 
             <div className="space-y-6 py-8">
-              <div className="max-w-[84%] rounded-[1.35rem] bg-[#1F1F1F] px-5 py-4 text-sm leading-6 text-[#E4E4E7]">
+              <div className="ml-auto max-w-[84%] rounded-[1.35rem] bg-[#1F1F1F] px-5 py-4 text-sm leading-6 text-[#E4E4E7]">
                 Can you explain what I should verify before signing a sale deed?
               </div>
-              <div className="ml-auto max-w-[88%] space-y-4 text-sm leading-6 text-[#D4D4D8]">
+              <div className="mr-auto max-w-[88%] space-y-4 text-sm leading-6 text-[#D4D4D8]">
                 <p>
                   Start with title continuity, encumbrance records, identity of parties, payment clauses, possession date, and registration requirements.
                 </p>
@@ -129,6 +105,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-3 rounded-[1.15rem] bg-[#121212] px-4 py-4">
                 <span className="h-2 w-2 rounded-full bg-[#D4D4D8]" />
                 <p className="text-sm text-[#71717A]">Ask a legal question...</p>
+                <Mic size={16} className="ml-auto text-[#D4D4D8]" />
               </div>
             </div>
           </div>
@@ -153,7 +130,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="workflow" className="mx-auto w-full max-w-7xl px-6 pb-24 sm:px-10">
+      <section id="workflow" className="mx-auto w-full max-w-7xl px-6 pb-20 sm:px-10">
         <div className="apple-surface grid gap-10 rounded-[2rem] p-8 sm:p-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="text-sm font-medium text-[#A1A1AA]">Workflow</p>
@@ -169,6 +146,18 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <footer className="mx-auto flex w-full max-w-7xl flex-col gap-4 border-t border-white/8 px-6 py-8 text-sm text-[#71717A] sm:px-10 md:flex-row md:items-center md:justify-between">
+        <p>AI can make mistakes. Please consult a qualified lawyer before acting.</p>
+        <div className="flex gap-5">
+          <Link href="/terms" className="transition-colors hover:text-[#F5F5F5]">
+            Terms
+          </Link>
+          <Link href="/privacy" className="transition-colors hover:text-[#F5F5F5]">
+            Privacy
+          </Link>
+        </div>
+      </footer>
     </main>
   );
 }

@@ -26,8 +26,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        display: ["var(--font-outfit)", "sans-serif"],
+        sans: ["var(--font-roboto)", "sans-serif"],
+        display: ["var(--font-roboto)", "sans-serif"],
       },
     },
   },
